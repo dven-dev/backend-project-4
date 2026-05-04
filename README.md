@@ -18,5 +18,7 @@ npm link
 ## Usage
 
 ```bash
-page-loader --output /var/tmp https://ru.hexlet.io/courses
+page-loader --output /tmp https://ru.hexlet.io/courses
 ```
+
+[![asciicast](https://asciinema.org/a/zmSlAfeJhTk1Jjdp.svg)](https://asciinema.org/a/zmSlAfeJhTk1Jjdp)
