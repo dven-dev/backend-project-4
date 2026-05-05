@@ -21,4 +21,10 @@ npm link
 page-loader --output /tmp https://ru.hexlet.io/courses
 ```
 
+Download a page and save it:
+
 [![asciicast](https://asciinema.org/a/zmSlAfeJhTk1Jjdp.svg)](https://asciinema.org/a/zmSlAfeJhTk1Jjdp)
+
+Download a page with images:
+
+[![asciicast](https://asciinema.org/a/DNWAeA7foBUGPZl3.svg)](https://asciinema.org/a/DNWAeA7foBUGPZl3)
