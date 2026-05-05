@@ -18,6 +18,15 @@ const buildImageName = (pageUrl, src) => {
   return `${name.slice(0, 150)}${ext}`;
 };
 
+const downloadImage = async (src, url, filesDirPath, filesDir) => {
+  const imgUrl = new URL(src, url).toString();
+  const imgName = buildImageName(url, src);
+  const imgPath = path.join(filesDirPath, imgName);
+  const imgResponse = await axios.get(imgUrl, { responseType: 'arraybuffer' });
+  await fs.promises.writeFile(imgPath, imgResponse.data);
+  return { src, localSrc: `${filesDir}/${imgName}` };
+};
+
 const pageLoader = async (url, outputDir = process.cwd()) => {
   const baseName = buildName(url);
   const htmlFile = path.join(outputDir, `${baseName}.html`);
@@ -37,14 +46,13 @@ const pageLoader = async (url, outputDir = process.cwd()) => {
 
   await fs.promises.mkdir(filesDirPath, { recursive: true });
 
-  for (const { el, src } of images) {
-    const imgUrl = new URL(src, url).toString();
-    const imgName = buildImageName(url, src);
-    const imgPath = path.join(filesDirPath, imgName);
-    const imgResponse = await axios.get(imgUrl, { responseType: 'arraybuffer' });
-    await fs.promises.writeFile(imgPath, imgResponse.data);
-    $(el).attr('src', `${filesDir}/${imgName}`);
-  }
+  const results = await Promise.all(
+    images.map(({ src }) => downloadImage(src, url, filesDirPath, filesDir)),
+  );
+
+  results.forEach(({ src, localSrc }) => {
+    $(`img[src="${src}"]`).attr('src', localSrc);
+  });
 
   await fs.promises.writeFile(htmlFile, $.html());
   return htmlFile;
