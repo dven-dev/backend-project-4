@@ -23,13 +23,9 @@ const buildResourceName = (pageUrl, resourceSrc) => {
 
 const isLocalResource = (src, pageUrl) => {
   if (!src) return false;
-  try {
-    const resourceHostname = new URL(src, pageUrl).hostname;
-    const pageHostname = new URL(pageUrl).hostname;
-    return resourceHostname === pageHostname;
-  } catch {
-    return false;
-  }
+  const resourceHostname = new URL(src, pageUrl).hostname;
+  const pageHostname = new URL(pageUrl).hostname;
+  return resourceHostname === pageHostname;
 };
 
 const isSamePage = (src, pageUrl) => {
