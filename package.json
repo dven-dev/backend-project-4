@@ -22,10 +22,12 @@
     "lint": "eslint ."
   },
   "jest": {
-    "testPathIgnorePatterns": [
-      "/node_modules/",
-      "/.history/"
-    ]
+  "testPathIgnorePatterns": [
+    "/node_modules/",
+    "/.history/"
+  ],
+  "collectCoverage": true,
+  "coverageReporters": ["lcov"]
   },
   "dependencies": {
     "axios": "^1.1.3",
