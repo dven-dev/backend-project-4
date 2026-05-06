@@ -28,3 +28,7 @@ Download a page and save it:
 Download a page with images:
 
 [![asciicast](https://asciinema.org/a/DNWAeA7foBUGPZl3.svg)](https://asciinema.org/a/DNWAeA7foBUGPZl3)
+
+Download a page with all local resources (styles, scripts, images):
+
+[![asciicast](https://asciinema.org/a/uJYBOlukomAjYStH.svg)](https://asciinema.org/a/uJYBOlukomAjYStH)
