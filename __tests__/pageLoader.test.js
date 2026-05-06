@@ -68,7 +68,6 @@ test('скачивает все локальные ресурсы и обнов�
 
   const filePath = await pageLoader('https://ru.hexlet.io/courses', tmpDir);
   const content = await fs.promises.readFile(filePath, 'utf-8');
-  console.log('HTML:', content);
 
   expect(content).toContain(
     'ru-hexlet-io-courses_files/ru-hexlet-io-assets-professions-nodejs.png',
