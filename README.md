@@ -32,3 +32,7 @@ Download a page with images:
 Download a page with all local resources (styles, scripts, images):
 
 [![asciicast](https://asciinema.org/a/uJYBOlukomAjYStH.svg)](https://asciinema.org/a/uJYBOlukomAjYStH)
+
+Download a page with debug logging enabled:
+
+[![asciicast](https://asciinema.org/a/3yIvMjtTLt1i1QbW.svg)](https://asciinema.org/a/3yIvMjtTLt1i1QbW)
