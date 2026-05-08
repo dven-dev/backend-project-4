@@ -2,6 +2,12 @@ import axios from 'axios';
 import fs from 'fs';
 import path from 'path';
 import * as cheerio from 'cheerio';
+import debug from 'debug';
+import axiosDebugLog from 'axios-debug-log';
+
+axiosDebugLog.addLogger(axios);
+
+const log = debug('page-loader');
 
 const buildPageName = (url) => {
   const { hostname, pathname } = new URL(url);
@@ -37,14 +43,14 @@ const isSamePage = (src, pageUrl) => {
 
 const downloadResource = async (src, pageUrl, filesDirPath, filesDir) => {
   const resourceName = buildResourceName(pageUrl, src);
-
   if (!isSamePage(src, pageUrl)) {
     const resourceUrl = new URL(src, pageUrl).toString();
     const resourcePath = path.join(filesDirPath, resourceName);
+    log('downloading %s', resourceUrl);
     const response = await axios.get(resourceUrl, { responseType: 'arraybuffer' });
     await fs.promises.writeFile(resourcePath, response.data);
+    log('saved %s', resourcePath);
   }
-
   return { src, localSrc: `${filesDir}/${resourceName}` };
 };
 
@@ -55,6 +61,7 @@ const RESOURCE_SELECTORS = [
 ];
 
 const pageLoader = async (url, outputDir = process.cwd()) => {
+  log('loading page %s into %s', url, outputDir);
   const baseName = buildPageName(url);
   const htmlFile = path.join(outputDir, `${baseName}.html`);
   const filesDir = `${baseName}_files`;
@@ -73,6 +80,8 @@ const pageLoader = async (url, outputDir = process.cwd()) => {
     });
   });
 
+  log('found %d local resources', resources.length);
+
   if (resources.length > 0) {
     await fs.promises.mkdir(filesDirPath, { recursive: true });
   }
@@ -88,6 +97,7 @@ const pageLoader = async (url, outputDir = process.cwd()) => {
   });
 
   await fs.promises.writeFile(htmlFile, $.html());
+  log('page saved to %s', htmlFile);
   return htmlFile;
 };
 
