@@ -23,19 +23,20 @@ page-loader --output /tmp https://ru.hexlet.io/courses
 
 Download a page and save it:
 
-[![asciicast](https://asciinema.org/a/zmSlAfeJhTk1Jjdp.svg)](https://asciinema.org/a/zmSlAfeJhTk1Jjdp)
+[![asciicast](https://asciinema.org/a/0sRDPwXjPDQpbOfK.svg)](https://asciinema.org/a/0sRDPwXjPDQpbOfK)
 
 Download a page with images:
 
-[![asciicast](https://asciinema.org/a/DNWAeA7foBUGPZl3.svg)](https://asciinema.org/a/DNWAeA7foBUGPZl3)
+[![asciicast](https://asciinema.org/a/jYQ1ZWbbmWLjBaTj.svg)](https://asciinema.org/a/jYQ1ZWbbmWLjBaTj)
 
 Download a page with all local resources (styles, scripts, images):
 
-[![asciicast](https://asciinema.org/a/uJYBOlukomAjYStH.svg)](https://asciinema.org/a/uJYBOlukomAjYStH)
+[![asciicast](https://asciinema.org/a/fYJQUsTt9BzDb6NF.svg)](https://asciinema.org/a/fYJQUsTt9BzDb6NF)
 
 Download a page with debug logging enabled:
 
-[![asciicast](https://asciinema.org/a/3yIvMjtTLt1i1QbW.svg)](https://asciinema.org/a/3yIvMjtTLt1i1QbW)
+[![asciicast](https://asciinema.org/a/hjrkybqWDjCeVafY.svg)](https://asciinema.org/a/hjrkybqWDjCeVafY)
 
 Error handling example:
+
 [![asciicast](https://asciinema.org/a/iktPVFfHqsh1PdZu.svg)](https://asciinema.org/a/iktPVFfHqsh1PdZu)
