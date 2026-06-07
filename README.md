@@ -36,3 +36,6 @@ Download a page with all local resources (styles, scripts, images):
 Download a page with debug logging enabled:
 
 [![asciicast](https://asciinema.org/a/3yIvMjtTLt1i1QbW.svg)](https://asciinema.org/a/3yIvMjtTLt1i1QbW)
+
+Error handling example:
+[![asciicast](https://asciinema.org/a/iktPVFfHqsh1PdZu.svg)](https://asciinema.org/a/iktPVFfHqsh1PdZu)
