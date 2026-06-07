@@ -58,9 +58,12 @@ const fetchUrl = async (url) => {
   }
 };
 
-const downloadResource = async (src, pageUrl, filesDirPath, filesDir) => {
+const downloadResource = async (src, pageUrl, filesDirPath, filesDir, pageContent) => {
   const resourceName = buildResourceName(pageUrl, src);
-  if (!isSamePage(src, pageUrl)) {
+  if (isSamePage(src, pageUrl)) {
+    const resourcePath = path.join(filesDirPath, resourceName);
+    await fs.promises.writeFile(resourcePath, pageContent);
+  } else {
     const resourceUrl = new URL(src, pageUrl).toString();
     const resourcePath = path.join(filesDirPath, resourceName);
     log('downloading %s', resourceUrl);
@@ -115,7 +118,7 @@ const pageLoader = async (url, outputDir = process.cwd()) => {
   const tasks = new Listr(
     resources.map(({ src }) => ({
       title: src,
-      task: () => downloadResource(src, url, filesDirPath, filesDir)
+      task: () => downloadResource(src, url, filesDirPath, filesDir, response.data)
         .then((result) => results.push(result)),
     })),
     { concurrent: true },
