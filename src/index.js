@@ -9,6 +9,13 @@ axiosDebugLog.addLogger(axios);
 
 const log = debug('page-loader');
 
+export class PageLoaderError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = 'PageLoaderError';
+  }
+}
+
 const buildPageName = (url) => {
   const { hostname, pathname } = new URL(url);
   const raw = `${hostname}${pathname}`;
@@ -41,13 +48,22 @@ const isSamePage = (src, pageUrl) => {
     && resourceUrl.pathname === page.pathname;
 };
 
+const fetchUrl = async (url) => {
+  try {
+    return await axios.get(url, { responseType: 'arraybuffer' });
+  } catch (err) {
+    const status = err.response ? ` (HTTP ${err.response.status})` : '';
+    throw new PageLoaderError(`Failed to load ${url}${status}: ${err.message}`);
+  }
+};
+
 const downloadResource = async (src, pageUrl, filesDirPath, filesDir) => {
   const resourceName = buildResourceName(pageUrl, src);
   if (!isSamePage(src, pageUrl)) {
     const resourceUrl = new URL(src, pageUrl).toString();
     const resourcePath = path.join(filesDirPath, resourceName);
     log('downloading %s', resourceUrl);
-    const response = await axios.get(resourceUrl, { responseType: 'arraybuffer' });
+    const response = await fetchUrl(resourceUrl);
     await fs.promises.writeFile(resourcePath, response.data);
     log('saved %s', resourcePath);
   }
@@ -62,12 +78,19 @@ const RESOURCE_SELECTORS = [
 
 const pageLoader = async (url, outputDir = process.cwd()) => {
   log('loading page %s into %s', url, outputDir);
+
+  try {
+    await fs.promises.access(outputDir);
+  } catch {
+    throw new PageLoaderError(`Output directory does not exist: ${outputDir}`);
+  }
+
   const baseName = buildPageName(url);
   const htmlFile = path.join(outputDir, `${baseName}.html`);
   const filesDir = `${baseName}_files`;
   const filesDirPath = path.join(outputDir, filesDir);
 
-  const response = await axios.get(url);
+  const response = await fetchUrl(url);
   const $ = cheerio.load(response.data);
 
   const resources = [];
@@ -96,7 +119,12 @@ const pageLoader = async (url, outputDir = process.cwd()) => {
     });
   });
 
-  await fs.promises.writeFile(htmlFile, $.html());
+  try {
+    await fs.promises.writeFile(htmlFile, $.html());
+  } catch (err) {
+    throw new PageLoaderError(`Failed to save ${htmlFile}: ${err.message}`);
+  }
+
   log('page saved to %s', htmlFile);
   return htmlFile;
 };

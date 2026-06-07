@@ -69,22 +69,10 @@ test('скачивает все локальные ресурсы и обнов�
   const filePath = await pageLoader('https://ru.hexlet.io/courses', tmpDir);
   const content = await fs.promises.readFile(filePath, 'utf-8');
 
-  expect(content).toContain(
-    'ru-hexlet-io-courses_files/ru-hexlet-io-assets-professions-nodejs.png',
-  );
-
-  expect(content).toContain(
-    'ru-hexlet-io-courses_files/ru-hexlet-io-assets-application.css',
-  );
-
-  expect(content).toContain(
-    'ru-hexlet-io-courses_files/ru-hexlet-io-courses.html',
-  );
-
-  expect(content).toContain(
-    'ru-hexlet-io-courses_files/ru-hexlet-io-packs-js-runtime.js',
-  );
-
+  expect(content).toContain('ru-hexlet-io-courses_files/ru-hexlet-io-assets-professions-nodejs.png');
+  expect(content).toContain('ru-hexlet-io-courses_files/ru-hexlet-io-assets-application.css');
+  expect(content).toContain('ru-hexlet-io-courses_files/ru-hexlet-io-courses.html');
+  expect(content).toContain('ru-hexlet-io-courses_files/ru-hexlet-io-packs-js-runtime.js');
   expect(content).toContain('https://cdn2.hexlet.io/assets/menu.css');
   expect(content).toContain('https://js.stripe.com/v3/');
 
@@ -104,4 +92,58 @@ test('скачивает все локальные ресурсы и обнов�
     path.join(filesDir, 'ru-hexlet-io-packs-js-runtime.js'),
   ).then(() => true).catch(() => false);
   expect(jsExists).toBe(true);
+});
+
+test('выбрасывает ошибку при HTTP 404', async () => {
+  nock('https://ru.hexlet.io')
+    .get('/courses')
+    .reply(404);
+
+  await expect(
+    pageLoader('https://ru.hexlet.io/courses', tmpDir),
+  ).rejects.toThrow('Failed to load https://ru.hexlet.io/courses (HTTP 404)');
+});
+
+test('выбрасывает ошибку при HTTP 500', async () => {
+  nock('https://ru.hexlet.io')
+    .get('/courses')
+    .reply(500);
+
+  await expect(
+    pageLoader('https://ru.hexlet.io/courses', tmpDir),
+  ).rejects.toThrow('Failed to load https://ru.hexlet.io/courses (HTTP 500)');
+});
+
+test('выбрасывает ошибку при сетевом сбое', async () => {
+  nock('https://ru.hexlet.io')
+    .get('/courses')
+    .replyWithError('Connection reset');
+
+  await expect(
+    pageLoader('https://ru.hexlet.io/courses', tmpDir),
+  ).rejects.toThrow('Failed to load https://ru.hexlet.io/courses');
+});
+
+test('выбрасывает ошибку при HTTP 404 для ресурса', async () => {
+  nock('https://ru.hexlet.io')
+    .get('/courses')
+    .reply(200, '<html><img src="/assets/missing.png" /></html>');
+
+  nock('https://ru.hexlet.io')
+    .get('/assets/missing.png')
+    .reply(404);
+
+  await expect(
+    pageLoader('https://ru.hexlet.io/courses', tmpDir),
+  ).rejects.toThrow('Failed to load https://ru.hexlet.io/assets/missing.png (HTTP 404)');
+});
+
+test('выбрасывает ошибку если директория назначения не существует', async () => {
+  nock('https://ru.hexlet.io')
+    .get('/courses')
+    .reply(200, '<html>Hello</html>');
+
+  await expect(
+    pageLoader('https://ru.hexlet.io/courses', '/nonexistent/dir'),
+  ).rejects.toThrow('Output directory does not exist: /nonexistent/dir');
 });
