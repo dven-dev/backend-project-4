@@ -4,6 +4,7 @@ import path from 'path';
 import * as cheerio from 'cheerio';
 import debug from 'debug';
 import axiosDebugLog from 'axios-debug-log';
+import Listr from 'listr';
 
 axiosDebugLog.addLogger(axios);
 
@@ -109,9 +110,18 @@ const pageLoader = async (url, outputDir = process.cwd()) => {
     await fs.promises.mkdir(filesDirPath, { recursive: true });
   }
 
-  const results = await Promise.all(
-    resources.map(({ src }) => downloadResource(src, url, filesDirPath, filesDir)),
+  const results = [];
+
+  const tasks = new Listr(
+    resources.map(({ src }) => ({
+      title: src,
+      task: () => downloadResource(src, url, filesDirPath, filesDir)
+        .then((result) => results.push(result)),
+    })),
+    { concurrent: true },
   );
+
+  await tasks.run();
 
   results.forEach(({ src, localSrc }) => {
     RESOURCE_SELECTORS.forEach(({ tag, attr }) => {

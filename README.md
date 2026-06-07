@@ -40,3 +40,6 @@ Download a page with debug logging enabled:
 Error handling example:
 
 [![asciicast](https://asciinema.org/a/iktPVFfHqsh1PdZu.svg)](https://asciinema.org/a/iktPVFfHqsh1PdZu)
+
+Download a page with progress:
+[![asciicast](https://asciinema.org/a/3WsOxxSlKe8h2vwq.svg)](https://asciinema.org/a/3WsOxxSlKe8h2vwq)
