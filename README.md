@@ -5,6 +5,8 @@
 
 [![Node.js CI](https://github.com/dven-dev/backend-project-4/actions/workflows/nodejs.yml/badge.svg)](https://github.com/dven-dev/backend-project-4/actions/workflows/nodejs.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=dven-dev_backend-project-4&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=dven-dev_backend-project-4)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=dven-dev_backend-project-4&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=dven-dev_backend-project-4)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=dven-dev_backend-project-4&metric=coverage)](https://sonarcloud.io/summary/new_code?id=dven-dev_backend-project-4)
 
 Page loader utility — CLI tool that downloads a web page and saves it locally.
 
