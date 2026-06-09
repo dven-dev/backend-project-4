@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-import { program } from 'commander';
-import pageLoader from '../src/index.js';
+import { program } from 'commander'
+import pageLoader from '../src/index.js'
 
 program
   .name('page-loader')
@@ -11,11 +11,11 @@ program
   .argument('<url>')
   .action((url, options) => {
     pageLoader(url, options.output)
-      .then((filePath) => console.log(filePath))
+      .then(filePath => console.log(filePath))
       .catch((err) => {
-        console.error(err.message);
-        process.exit(1);
-      });
-  });
+        console.error(err.message)
+        process.exit(1)
+      })
+  })
 
-program.parse();
+program.parse()
