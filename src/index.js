@@ -1,6 +1,6 @@
 import axios from 'axios'
-import fs from 'fs'
-import path from 'path'
+import fs from 'node:fs'
+import path from 'node:path'
 import * as cheerio from 'cheerio'
 import debug from 'debug'
 import axiosDebugLog from 'axios-debug-log'
