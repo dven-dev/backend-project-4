@@ -76,6 +76,12 @@ const downloadResource = (src, pageUrl, filesDirPath, filesDir, pageContent) => 
     })
 }
 
+const buildTask = (src, url, filesDirPath, filesDir, pageContent, results) => ({
+  title: src,
+  task: () => downloadResource(src, url, filesDirPath, filesDir, pageContent)
+    .then(result => results.push(result)),
+})
+
 const RESOURCE_SELECTORS = [
   { tag: 'img', attr: 'src' },
   { tag: 'link', attr: 'href' },
@@ -120,11 +126,7 @@ const pageLoader = (url, outputDir = process.cwd()) => {
       const results = []
 
       const tasks = new Listr(
-        resources.map(({ src }) => ({
-          title: src,
-          task: () => downloadResource(src, url, filesDirPath, filesDir, pageContent)
-            .then(result => results.push(result)),
-        })),
+        resources.map(({ src }) => buildTask(src, url, filesDirPath, filesDir, pageContent, results)),
         { concurrent: true },
       )
 
